@@ -4,7 +4,12 @@ USER root
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-      build-essential procps curl file git ca-certificates && \
+      build-essential \
+      procps \
+      curl \
+      file \
+      git \
+      ca-certificates && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -19,3 +24,10 @@ RUN NONINTERACTIVE=1 /bin/bash -c \
 ENV PATH="/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:${PATH}"
 
 RUN brew install steipete/tap/gogcli
+
+COPY --chown=node:node init-auth.sh /home/node/init-auth.sh
+RUN chmod +x /home/node/init-auth.sh
+
+WORKDIR /home/node
+
+CMD ["bash", "-lc", "/home/node/init-auth.sh && openclaw gateway"]

@@ -157,12 +157,5 @@
       "mode": "token",
       "token": "967865e2288905323a4c5197def5909e76982ce0df32d69d"
     }
-  },
-  "llm": {
-    "providers": {
-      "openrouter": {
-        "apiKey": "${OPENROUTER_API_KEY}"
-      }
-    }
   }
 }
