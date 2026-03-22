@@ -49,9 +49,17 @@ gog gmail messages get <messageId>
 
 Calendar
 
-gog calendar list
+カレンダー一覧
+gog calendar calendars
 
-gog calendar events list <calendarId> --from now --to +1d
+今日の予定（単一カレンダー）
+gog calendar events <calendarId> --today
+
+今日の予定（全カレンダー）
+gog calendar events --all --today
+
+必要に応じて日数指定
+gog calendar events <calendarId> --days 3
 
 --------------------------------
 
