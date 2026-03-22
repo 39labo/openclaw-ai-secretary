@@ -1,0 +1,32 @@
+services:
+  openclaw:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: openclaw-with-gog:latest
+    container_name: openclaw
+    restart: unless-stopped
+
+    ports:
+      - "127.0.0.1:18789:18789"
+
+    env_file:
+      - .env
+
+    environment:
+      TZ: Asia/Tokyo
+      AUTH_USERNAME: admin
+      AUTH_PASSWORD: ${AUTH_PASSWORD}
+
+      OPENCLAW_GATEWAY_BIND: lan
+
+      GOG_ACCOUNT: ${GOG_ACCOUNT}
+      GOG_KEYRING_BACKEND: file
+      GOG_KEYRING_PASSWORD: ${GOG_KEYRING_PASSWORD}
+
+      PATH: /home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /root/openclaw-data:/home/node/.openclaw
+      - /root/openclaw-data/config:/home/node/.config

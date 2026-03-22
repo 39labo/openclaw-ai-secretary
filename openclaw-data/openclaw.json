@@ -1,0 +1,168 @@
+{
+  "meta": {
+    "lastTouchedVersion": "2026.3.13",
+    "lastTouchedAt": "2026-03-18T12:14:24.045Z"
+  },
+  "auth": {
+    "profiles": {
+      "openrouter:default": {
+        "provider": "openrouter",
+        "mode": "api_key"
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "models": {
+        "openrouter/auto": {
+          "alias": "OpenRouter"
+        }
+      },
+      "workspace": "~/.openclaw/workspace",
+      "compaction": {
+        "mode": "safeguard"
+      },
+      "heartbeat": {
+        "every": "30m",
+        "activeHours": {
+          "start": "07:30",
+          "end": "23:30"
+        },
+        "target": "last",
+        "directPolicy": "allow",
+        "lightContext": true
+      }
+    },
+    "list": [
+      {
+        "id": "main",
+        "name": "main",
+        "workspace": "/home/node/.openclaw/workspace-main",
+        "agentDir": "/home/node/.openclaw/agents/main/agent",
+        "model": "openrouter/deepseek/deepseek-chat-v3",
+        "subagents": {
+          "allowAgents": ["secretary"]
+        }
+      },
+      {
+        "id": "secretary",
+        "name": "secretary",
+        "workspace": "/home/node/.openclaw/workspace-secretary",
+        "agentDir": "/home/node/.openclaw/agents/secretary/agent",
+        "model": "openrouter/deepseek/deepseek-chat-v3"
+      }
+    ]
+  },
+  "tools": {
+    "exec": {
+      "pathPrepend": [
+        "/root/.gogcli/bin"
+      ]
+    }
+  },
+  "bindings": [
+    {
+      "agentId": "main",
+      "match": {
+        "channel": "slack",
+        "peer": { "kind": "channel", "id": "C0AKZN5TSM6" }
+      }
+    },
+    {
+      "agentId": "secretary",
+      "match": {
+        "channel": "slack",
+        "peer": { "kind": "channel", "id": "C0AK92CU17E" }
+      }
+    },
+    {
+      "type": "route",
+      "agentId": "main",
+      "match": {
+        "channel": "slack",
+        "accountId": "default"
+      }
+    },
+    {
+    "agentId": "main",
+      "match": {
+        "channel": "discord",
+        "peer": { "kind": "channel", "id": "1483832728905318451" }
+      }
+    },
+    {
+    "agentId": "secretary",
+      "match": {
+        "channel": "discord",
+        "peer": { "kind": "channel", "id": "1483833002428731604" }
+      }
+    }
+  ],
+  "commands": {
+    "native": "auto",
+    "nativeSkills": "auto",
+    "restart": true,
+    "ownerDisplay": "raw"
+  },
+  "channels": {
+    "slack": {
+      "mode": "socket",
+      "webhookPath": "/slack/events",
+      "enabled": true,
+      "commands": {
+        "native": true
+      },
+      "botToken": "${SLACK_BOT_TOKEN}",
+      "appToken": "${SLACK_APP_TOKEN}",
+      "userTokenReadOnly": true,
+      "allowBots": true,
+      "groupPolicy": "open",
+      "streaming": "partial",
+      "nativeStreaming": true,
+      "replyToMode": "all",
+      "dmPolicy": "pairing",
+      "dm": {
+        "enabled": true,
+        "groupEnabled": true
+      }
+    },
+    "discord": {
+      "enabled": true,
+      "guilds": {
+        "1483828708619059230": {
+          "requireMention": false,
+          "users": ["1483827929644400701"]
+        }
+      },
+      "groupPolicy": "allowlist",
+      "token": "${DISCORD_TOKEN}",
+      "threadBindings": {
+        "enabled": true,
+        "spawnSubagentSessions": true,
+        "idleHours": 6,
+        "maxAgeHours": 24
+      }
+    }
+  },
+  "gateway": {
+    "mode": "local",
+    "bind": "lan",
+    "controlUi": {
+      "allowedOrigins": [
+        "http://localhost:18789",
+        "http://127.0.0.1:18789"
+      ]
+    },
+    "auth": {
+      "mode": "token",
+      "token": "967865e2288905323a4c5197def5909e76982ce0df32d69d"
+    }
+  },
+  "llm": {
+    "providers": {
+      "openrouter": {
+        "apiKey": "${OPENROUTER_API_KEY}"
+      }
+    }
+  }
+}

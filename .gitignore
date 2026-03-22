@@ -1,0 +1,5 @@
+openclaw-data/agents/**/auth-profiles.json
+openclaw-data/client_secret.json
+openclaw-data/gog-token.json
+openclaw-data/config/
+.env
