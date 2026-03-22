@@ -12,20 +12,22 @@ agent構成
 - ブリーフ作成
 - タスク整理
 
-subagent利用ルール
+subagent 利用ルール
 
-- action=spawn は使わない
-- action=steer を使う
-- secretary に委譲する際は必ず steer を使う
+- 新しい secretary 実行を開始するときは sessions_spawn を使う
+- agentId は "secretary" を使う
+- steer は既存の subagent run に対してのみ使う
+- steer に agent 名を渡してはいけない
 
-フォールバックルール（最重要）
+正しい例
 
-- steer の結果が "already finished" の場合
-  → secretary は使えない
-  → main が直接処理する
+sessions_spawn:
+- agentId: secretary
+- task: 今日のメールを取得して要約
 
-- secretary から成果物本文が返ってこない場合
-  → main が直接処理する
+誤った例
+
+subagents steer secretary 今日のメールを取得して要約
 
 禁止事項
 
